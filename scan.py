@@ -9,13 +9,13 @@ lock = threading.Lock()
 
 target = input("IP:") # Input for ip address 
 
-queue = Queue()
+queue = Queue() #queing the ports
 
 openports = [] #saving the open ports here
 
 
-def portscan(port):
-    try:
+def portscan(port): #function for the port scan using socket
+    try: #if any error was found passing it so that the program doesnt close 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         socket.setdefaulttimeout(1)
         out = s.connect_ex((target, port))
@@ -27,14 +27,14 @@ def portscan(port):
     except:
         pass
 
-def worker():
+def worker(): #workers for multithreading in order to make it faster the higher the thread number the faster the program depends on the CPU core
     while True:
         port= queue.get()
         portscan(port)
         queue.task_done()
 threads = 100
 
-for thread in range(threads):
+for thread in range(threads): #getting the number of workers (threads) to assign
     thread = threading.Thread(target=worker)
     thread.daemon = True
     thread.start()
@@ -42,10 +42,10 @@ for thread in range(threads):
 start = int(input("Start port:"))
 end = int(input("End port:"))
 
-for port in range(start, end + 1):
+for port in range(start, end + 1): #queing the start and end ports
     queue.put(port)
 
-try:
+try: #loading bar based on the range of the IP port and completion 
     for _ in range(start, end + 1):
         sys.stdout.flush()
         time.sleep(0.05) #thats for the loading bar adjustment
