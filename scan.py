@@ -30,7 +30,7 @@ def worker():
         queue.task_done()
 threads = 100
 
-for thread in range(thread_count):
+for thread in range(threads):
     thread = threading.Thread(ip=worker)
     thread.daemon = True
     thread.start()
