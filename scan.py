@@ -7,7 +7,7 @@ import time
 
 lock = threading.Lock()
 
-ip = input("IP:")
+target = input("IP:")
 
 queue = Queue()
 
@@ -31,7 +31,7 @@ def worker():
 threads = 100
 
 for thread in range(threads):
-    thread = threading.Thread(ip=worker)
+    thread = threading.Thread(target=worker)
     thread.daemon = True
     thread.start()
 
