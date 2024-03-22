@@ -7,18 +7,21 @@ import time
 
 lock = threading.Lock()
 
-target = input("IP:")
+target = input("IP:") # Input for ip address 
 
 queue = Queue()
+
+openports = [] #saving the open ports here
+
 
 def portscan(port):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         socket.setdefaulttimeout(1)
-        out = s.connect_ex((target.port))
+        out = s.connect_ex((target, port))
         if out == 0:
             with lock:
-                    print("port open :", port)
+                    print("\nopen port:", port)
         s.close()
     except:
         pass
