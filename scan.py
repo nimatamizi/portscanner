@@ -3,7 +3,7 @@ import threading
 from queue import Queue
 import sys
 import time
-
+from datetime import datetime
 
 lock = threading.Lock()
 
@@ -22,6 +22,7 @@ def portscan(port):
         if out == 0:
             with lock:
                     print("\nopen port:", port)
+                    openports.append(port)
         s.close()
     except:
         pass
@@ -52,4 +53,11 @@ try:
 finally:
     queue.join()
 
+
 print('scanning is done.')
+
+with open(f"scan_results_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt", 'w') as f: #saving the data into a file with the name of the file being the date
+    f.write(f"Scan results for {target} on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+    f.write("Open ports:\n")
+    for port in openports:
+        f.write(f"{port}\n")
